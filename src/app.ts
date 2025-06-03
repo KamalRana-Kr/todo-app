@@ -1,12 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocs from './swagger';
 import { registerRoutes } from './routes/index';
 import { authMiddleware } from './middlewares/auth.middleware';
 import { errorHandler } from './middlewares/error.middleware';
 import helmet from 'helmet';
-import swaggerUi from 'swagger-ui-express';
-import swaggerDocs from './swagger';
+
+import './cron-jobs/expireTodoJob';
 
 const app = express();
 
