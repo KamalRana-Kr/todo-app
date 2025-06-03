@@ -23,6 +23,7 @@
  *           type: string
  *           format: date-time
  *           example: "2025-06-05T10:00:00Z"
+
  *     UpdateTodoDTO:
  *       type: object
  *       properties:
@@ -39,6 +40,7 @@
  *         completed:
  *           type: boolean
  *           example: true
+
  *     TodoResponse:
  *       type: object
  *       properties:
@@ -66,13 +68,16 @@
  *           type: string
  *           format: date-time
  *           example: "2025-06-02T12:00:00Z"
+
  *   securitySchemes:
  *     bearerAuth:
  *       type: http
  *       scheme: bearer
  *       bearerFormat: JWT
- 
- * @openapi
+ */
+
+/**
+ * @swagger
  * /api/todos/add:
  *   post:
  *     summary: Create a new Todo
@@ -104,8 +109,10 @@
  *                   $ref: '#/components/schemas/TodoResponse'
  *       400:
  *         description: Failed to create Todo
-  
- * @openapi
+ */
+
+/**
+ * @swagger
  * /api/todos/update/{id}:
  *   put:
  *     summary: Update Todo by ID
@@ -145,4 +152,70 @@
  *                   $ref: '#/components/schemas/TodoResponse'
  *       404:
  *         description: Todo not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 404
+ *                 message:
+ *                   type: string
+ *                   example: Todo not found
+ *                 data:
+ *                   type: string
+ *                   nullable: true
+ *                   example: null
+ */
+
+/**
+ * @swagger
+ * /api/todos/get/{id}:
+ *   get:
+ *     summary: Get Todo details by ID
+ *     tags: [Todo]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Todo ID
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: 60c72b2f9eb1a8b4f8dcbef1
+ *     responses:
+ *       200:
+ *         description: Todo details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: Todo fetched successfully
+ *                 data:
+ *                   $ref: '#/components/schemas/TodoResponse'
+ *       404:
+ *         description: Todo not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 404
+ *                 message:
+ *                   type: string
+ *                   example: Todo not found
+ *                 data:
+ *                   type: string
+ *                   nullable: true
+ *                   example: null
  */

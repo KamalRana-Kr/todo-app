@@ -50,3 +50,25 @@ export async function updateTodo(
         updatedAt: result.updatedAt,
     };
 }
+
+export async function getTodoDetails(
+    todoId: string,
+    userId: string
+): Promise<TodoResponse | null> {
+    const todo = await Todo.findOne({
+        _id: todoId,
+        user: userId
+    });
+    if (!todo) {
+        return null
+    };
+    return {
+        id: todo.id,
+        title: todo.title,
+        description: todo.description || '',
+        status: todo.completed ? 'completed' : 'pending',
+        dueDate: todo.dueDate,
+        createdAt: todo.createdAt,
+        updatedAt: todo.updatedAt
+    };
+}
