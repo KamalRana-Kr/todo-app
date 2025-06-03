@@ -1,4 +1,7 @@
-export const PUBLIC_APIS = [];
+export const PUBLIC_APIS = [
+  '/api/auth/login',
+  '/api/auth/signup'
+];
 
 export const HTTP_STATUS_CODES = {
   CREATED: 201,
@@ -10,6 +13,18 @@ export const HTTP_STATUS_CODES = {
   NOT_FOUND: 404,
 };
 
-export const AUTH_MESSAGES = {};
+export const AUTH_MESSAGES = {
+  USER_REGISTERED_SUCCESS: 'User registered successfully',
+  USER_LOGGED_IN_SUCCESS: 'User logged in successfully',
+  AUTH_TOKEN_MISSING_OR_INVALID: 'Authentication token missing or invalid',
+  UNAUTHORIZED_USER: 'Unauthorized user',
+  USER_DEACTIVATED: 'User is deactivated',
+  INVALID_OR_EXPIRED_TOKEN: 'Invalid or expired token',
+};
+
+export const AUTH_ERROR_MESSAGES = {
+  EMAIL_ALREADY_REGISTERED: 'Email already registered',
+  INVALID_EMAIL_OR_PASSWORD: 'Invalid email or password',
+};
 
 export const TODO_MESSAGES = {};
