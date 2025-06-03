@@ -1,0 +1,15 @@
+export const PUBLIC_APIS = [];
+
+export const HTTP_STATUS_CODES = {
+  CREATED: 201,
+  OK: 200,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  INTERNAL_SERVER_ERROR: 500,
+  BAD_REQUEST: 400,
+  NOT_FOUND: 404,
+};
+
+export const AUTH_MESSAGES = {};
+
+export const TODO_MESSAGES = {};
