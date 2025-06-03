@@ -1,10 +1,11 @@
 import { Router } from 'express';
-import { createTodoSchema } from './todo.validator';
+import { createTodoSchema, updateTodoSchema } from './todo.validator';
 import { validateRequestBody } from '../../middlewares/validate.middleware';
-import { createTodo } from './todo.controller';
+import { createTodo, updateTodo } from './todo.controller';
 
 const router = Router();
 
 router.post('/add', validateRequestBody(createTodoSchema), createTodo);
+router.put('/update/:id', validateRequestBody(updateTodoSchema), updateTodo);
 
 export default router;

@@ -29,4 +29,12 @@ export const AUTH_ERROR_MESSAGES = {
 
 export const TODO_MESSAGES = {
   TODO_CREATED_SUCCESS: 'Todo created successfully',
+  TODO_UPDATED_SUCCESS: 'Todo updated successfully',
+  TODO_NOT_FOUND: 'Todo not found'
+};
+
+export const TODO_ERROR_MESSAGES = {
+  TODO_CREATION_FAILED: 'Failed to create todo',
+  TODO_UPDATE_FAILED: 'Failed to update todo',
+  TODO_NOT_FOUND: 'Todo not found',
 };

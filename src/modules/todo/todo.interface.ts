@@ -26,3 +26,10 @@ export interface TodoResponse {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface UpdateTodoDTO {
+    title?: string;
+    description?: string;
+    dueDate?: Date;
+    completed?: boolean;
+}
