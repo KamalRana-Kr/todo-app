@@ -18,8 +18,8 @@ Prerequisites:
 
 Open your terminal and run:
 
-    git clone https://github.com/yourusername/todo-api.git
-    cd todo-api
+    git clone https://github.com/KamalRana-Kr/todo-app
+    cd todo-app
 
 ## Step 2: Install Dependencies
 
