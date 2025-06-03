@@ -27,4 +27,6 @@ export const AUTH_ERROR_MESSAGES = {
   INVALID_EMAIL_OR_PASSWORD: 'Invalid email or password',
 };
 
-export const TODO_MESSAGES = {};
+export const TODO_MESSAGES = {
+  TODO_CREATED_SUCCESS: 'Todo created successfully',
+};

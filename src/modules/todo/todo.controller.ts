@@ -1,0 +1,40 @@
+import { Request, Response, NextFunction } from 'express';
+import {
+    createTodo as createTodoService,
+} from './todo.service';
+import { CreateTodoDTO, TodoResponse } from './todo.interface';
+import { IResponse, AuthRequest } from '../../common/common.interface';
+import { HTTP_STATUS_CODES, TODO_MESSAGES } from '../../utils/constants';
+
+//Add Todo
+export const createTodo = async (
+    req: Request<{}, IResponse<TodoResponse>, CreateTodoDTO>,
+    res: Response<IResponse<TodoResponse | null>>,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const authReq = req as AuthRequest;
+        console.info(`Received request to create Todo for user: ${authReq.user.userId}`);
+
+        const result = await createTodoService(req.body, authReq.user.userId);
+
+        if (!result) {
+            console.warn(`Failed to create Todo for user: ${authReq.user.userId}`);
+            res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
+                status: HTTP_STATUS_CODES.BAD_REQUEST,
+                message: TODO_MESSAGES.TODO_CREATED_SUCCESS,
+                data: null
+            });
+        } else {
+            console.info(`Todo created successfully for user: ${authReq.user.userId}`);
+            res.status(HTTP_STATUS_CODES.CREATED).json({
+                status: HTTP_STATUS_CODES.CREATED,
+                message: TODO_MESSAGES.TODO_CREATED_SUCCESS,
+                data: result
+            });
+        }
+    } catch (error) {
+        console.error("Error in createTodo function while creating Todo details", error);
+        next(error);
+    }
+};

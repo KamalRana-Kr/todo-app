@@ -36,20 +36,12 @@ export const authMiddleware = async (
 
     const decoded = jwt.verify(token, JWT_SECRET) as DecodedToken;
 
-    const user = await User.findById(decoded.userId).lean();
+    const user = await User.findById(decoded.userId);
 
     if (!user) {
       res.status(401).json({
         status: 401,
         message: 'Unauthorized user',
-      });
-      return;
-    }
-
-    if (!user.isActive) {
-      res.status(403).json({
-        status: 403,
-        message: 'User is deactivated',
       });
       return;
     }
