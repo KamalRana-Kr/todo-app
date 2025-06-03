@@ -117,3 +117,20 @@ export async function getTodosByUser(
     return { todos: todosList, total };
 }
 
+export async function removeTodo(
+    todoId: string,
+    userId: string
+): Promise<boolean> {
+    const todo = await Todo.findOne({
+        _id: todoId,
+        user: userId
+    });
+    if (!todo) {
+        return false;
+    }
+    await Todo.findOneAndDelete({
+        _id: todoId,
+        user: userId
+    });
+    return true;
+}

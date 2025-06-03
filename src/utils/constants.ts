@@ -33,11 +33,13 @@ export const TODO_MESSAGES = {
   TODO_FETCHED_SUCCESS: 'Todo fetched successfully',
   TODO_LIST_FETCHED_SUCCESS: 'Todo list fetched successfully',
   TODO_NOT_FOUND: 'Todo not found',
-  TODO_LIST_EMPTY: 'No todos available'
+  TODO_LIST_EMPTY: 'No todos available',
+  TODO_DELETED_SUCCESS: 'Todo deleted successfully'
 };
 
 export const TODO_ERROR_MESSAGES = {
   TODO_CREATION_FAILED: 'Failed to create todo',
   TODO_UPDATE_FAILED: 'Failed to update todo',
+  TODO_DELETION_FAILED: 'Failed to delete todo',
   TODO_NOT_FOUND: 'Todo not found',
 };

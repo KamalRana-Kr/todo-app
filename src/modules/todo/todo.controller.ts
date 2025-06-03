@@ -3,7 +3,8 @@ import {
     createTodo as createTodoService,
     getTodoDetails,
     getTodosByUser,
-    updateTodo as updateTodoService
+    updateTodo as updateTodoService,
+    removeTodo
 } from './todo.service';
 import { CreateTodoDTO, TodoResponse, UpdateTodoDTO } from './todo.interface';
 import { IResponse, AuthRequest } from '../../common/common.interface';
@@ -155,3 +156,39 @@ export const listTodos = async (
         next(error);
     }
 };
+
+//Delete Todo
+export const deleteTodo = async (
+    req: Request<{ id: string }>,
+    res: Response<IResponse<boolean>>,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const authReq = req as AuthRequest;
+        const { id } = req.params;
+
+        console.info(`Received request to delete Todo with ID: ${id} for user: ${authReq.user.userId}`);
+
+        const result = await removeTodo(id, authReq.user.userId);
+
+        if (!result) {
+            console.warn(`Todo with ID: ${id} not found for user: ${authReq.user.userId}`);
+            res.status(HTTP_STATUS_CODES.NOT_FOUND).json({
+                status: HTTP_STATUS_CODES.NOT_FOUND,
+                message: TODO_MESSAGES.TODO_NOT_FOUND,
+                data: false
+            });
+        } else {
+            console.info(`Todo with ID: ${id} deleted successfully for user: ${authReq.user.userId}`);
+            res.status(HTTP_STATUS_CODES.OK).json({
+                status: HTTP_STATUS_CODES.OK,
+                message: TODO_MESSAGES.TODO_DELETED_SUCCESS,
+                data: true
+            });
+        }
+    } catch (error) {
+        console.error(`Error in deleteTodo function while deleting Todo details for Todo ID: ${req.params.id}`, error);
+        next(error);
+    }
+};
+

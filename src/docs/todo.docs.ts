@@ -324,3 +324,53 @@
  *                   example: "Unauthorized"
  */
 
+/**
+ * @swagger
+* /api/todos/delete/{id}:
+*   delete:
+*     summary: Delete Todo by ID
+*     tags: [Todo]
+*     security:
+*       - bearerAuth: []
+*     parameters:
+*       - name: id
+*         in: path
+*         description: Todo ID to delete
+*         required: true
+*         schema:
+*           type: string
+*           example: 60c72b2f9eb1a8b4f8dcbef1
+*     responses:
+*       200:
+*         description: Todo deleted successfully
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 status:
+*                   type: integer
+*                   example: 200
+*                 message:
+*                   type: string
+*                   example: Todo deleted successfully
+*                 data:
+*                   type: boolean
+*                   example: true
+*       404:
+ *         description: Todo not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 404
+ *                 message:
+ *                   type: string
+ *                   example: Todo not found
+ *                 data:
+ *                   type: boolean
+ *                   example: false
+ */
