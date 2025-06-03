@@ -34,8 +34,17 @@ export async function login(data: LoginDTO): Promise<loginResponseInterface> {
         throw new Error(AUTH_ERROR_MESSAGES.INVALID_EMAIL_OR_PASSWORD);
     }
 
-    const JWT_SECRET = process.env.JWT_SECRET || 'thinkwik@123';
-    const token = jwt.sign({ userId: user._id, email: user.email }, JWT_SECRET, {
+    const JWT_SECRET = process.env.JWT_SECRET;
+    if (!JWT_SECRET) {
+        throw new Error('JWT_SECRET is not defined in environment variables');
+    }
+
+    const payload = {
+        userId: user._id.toString(),
+        email: user.email,
+    };
+
+    const token = jwt.sign(payload, JWT_SECRET, {
         expiresIn: '1d',
     });
 

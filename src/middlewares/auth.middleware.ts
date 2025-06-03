@@ -17,7 +17,9 @@ export const authMiddleware = async (
   try {
 
     //Checking public APIs
-    if (PUBLIC_APIS.includes(req.path)) {
+    const isPublic = PUBLIC_APIS.some(api => req.path.startsWith(api));
+
+    if (isPublic) {
       return next();
     }
 
@@ -32,9 +34,13 @@ export const authMiddleware = async (
     }
 
     const token = authHeader.split(' ')[1];
-    const JWT_SECRET = process.env.JWT_SECRET || 'thinkwik@123';
 
-    const decoded = jwt.verify(token, JWT_SECRET) as DecodedToken;
+    const JWT_SECRET = process.env.JWT_SECRET;
+    if (!JWT_SECRET) {
+      throw new Error('JWT_SECRET is not defined in environment variables');
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] }) as DecodedToken;
 
     const user = await User.findById(decoded.userId);
 
@@ -52,11 +58,17 @@ export const authMiddleware = async (
     };
 
     next();
-  } catch (error) {
-    console.error('Authentication error:', error);
-    res.status(401).json({
-      status: 401,
-      message: 'Invalid or expired token',
-    });
+  } catch (error: any) {
+    if (error.name === 'TokenExpiredError') {
+      res.status(401).json({
+        status: 401,
+        message: 'Token has expired'
+      });
+    } else {
+      res.status(401).json({
+        status: 401,
+        message: 'Invalid token'
+      });
+    }
   }
 };

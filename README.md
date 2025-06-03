@@ -1,149 +1,127 @@
 # Todo List REST API with Authentication and CRON Job
 
-This project is a **REST API** built using **Node.js**, **ExpressJS**, **Mongoose**, **MongoDB**, and **TypeScript**. It allows users to manage their todo items with full **CRUD** operations, includes **authentication** features, and sets up a **CRON job** to update the status of expired todo items.
+This project is a REST API built with Node.js, ExpressJS, Mongoose, MongoDB, and TypeScript.
+It allows authenticated users to manage their todo items with full CRUD operations
+and includes a CRON job to update the status of expired todos automatically.
 
-## Table of Contents
+---
 
-- [Project Overview](#project-overview)
-- [Technologies Used](#technologies-used)
-- [Setup Instructions](#setup-instructions)
-- [Prerequisites](#prerequisites)
-- [Installation Steps](#installation-steps)
-- [Environment Variables](#environment-variables)
-- [Run the Project](#run-the-project)
-- [Build the Project](#build-the-project)
-- [API Documentation](#api-documentation)
-- [Cron Job Setup](#cron-job-setup)
+## Setup & Installation Guide
 
-## Project Overview
+Prerequisites:
 
-This API provides the following functionality:
+- Node.js (version 20 or above)
+- MongoDB instance (local or cloud)
+- npm (comes with Node.js) or yarn
 
-### Authentication:
+## Step 1: Clone the Repository
 
-- Auth module for Users can **sign up** and **log in** to generate JWT access tokens for authentication.
+Open your terminal and run:
 
-### CRUD Operations on Todo Items:
+    git clone https://github.com/yourusername/todo-api.git
+    cd todo-api
 
-- **Create**, **Read**, **Update**, and **Delete** operations for todo items.
-- Each todo item is associated with a user and can only be managed by that user.
+## Step 2: Install Dependencies
 
-### Automatic Todo Expiration Handling:
+Install all required packages:
 
-- A **CRON job** runs daily to automatically update the status of expired todos.
+    npm install
 
-## Technologies Used
+## Step 3: (Optional) Install TypeScript & Types Manually
 
-- **Node.js**: JavaScript runtime environment.
-- **Express.js**: Web framework for building REST APIs.
-- **Mongoose**: MongoDB ODM (Object Document Mapping) for interacting with MongoDB.
-- **MongoDB**: NoSQL database to store todo items.
-- **TypeScript**: Strongly typed superset of JavaScript to ensure type safety.
-- **JWT (JSON Web Token)**: Token-based authentication.
-- **Bcrypt.js**: For securely hashing passwords.
-- **Cron**: For scheduling and running periodic tasks (like updating expired todo items).
-- **dotenv**: For managing environment variables.
-- **helmet**: HTTP headers security middleware for Express apps. It helps protect applications from some well-known web vulnerabilities by setting appropriate HTTP headers
-- **Node-cron**: For handling cron job scheduling in Node.js.
-- **CORS**: Middleware for enabling cross-origin requests in Express.
-- **Joi**: Data validation library used for input validation in the API.
-- **ts-node**: TypeScript execution engine for running TypeScript code directly.
-- **ts-node-dev**: Improved version of `ts-node` with live reload capabilities, useful for development.
+If you want to install or update TypeScript and related packages, run:
 
-### Development Dependencies
+    npm install express mongoose bcrypt jsonwebtoken dotenv node-cron
+    npm install -D typescript ts-node-dev @types/node @types/express @types/bcrypt @types/jsonwebtoken @types/mongoose @types/node-cron
 
-- **@types/cors**: TypeScript definitions for `cors` middleware.
-- **@types/joi**: TypeScript definitions for `joi`.
-- **@types/node-cron**: TypeScript definitions for `node-cron`.
-- **@types/bcrypt**: TypeScript definitions for `bcrypt`.
-- **@types/express**: TypeScript definitions for `express`.
-- **@types/jsonwebtoken**: TypeScript definitions for `jsonwebtoken`.
-- **@types/mongoose**: TypeScript definitions for `mongoose`.
-- **@types/node**: TypeScript definitions for Node.js.
+## Step 4: Initialize TypeScript Configuration (If not present)
 
-## Setup Instructions
+If you don’t have a tsconfig.json file, create one by running:
 
-### Prerequisites:
+    npx tsc --init
 
-- Node.js >= 20.x
-- MongoDB instance (either locally or using MongoDB Atlas)
-- A package manager (npm/yarn)
+Replace the generated content with the following recommended configuration:
 
-### Installation Steps:
+{
+"compilerOptions": {
+"target": "ES6",
+"module": "commonjs",
+"esModuleInterop": true,
+"strict": true,
+"skipLibCheck": true,
+"forceConsistentCasingInFileNames": true,
+"outDir": "./dist",
+"rootDir": "./src"
+},
+"include": ["src/**/*"],
+"exclude": ["node_modules"]
+}
 
-1. **Clone the repository**:
+## Step 5: Set Environment Variables
 
-   ```bash
-   git clone https://github.com/yourusername/todo-api.git
-   cd todo-api
-   ```
+Create a `.env` file in the root directory with the following content:
 
-2. **Install dependencies**:
-   Install all required dependencies:
-
-   npm install
-
-3. **Install TypeScript and TypeScript-related dependencies**:
-   Not required : To set up TypeScript, you need to install the following:
-
-   npm install express mongoose bcrypt jsonwebtoken dotenv node-cron
-   npm install -D typescript ts-node-dev @types/node @types/express @types/bcrypt @types/jsonwebtoken @types/mongoose
-
-4. **Initialize TypeScript configuration**:
-   If you don't have a `tsconfig.json` file, create it by running:
-   npx tsc --init
-
-   Your `tsconfig.json` file should look like this:
-
-   ```json
-   {
-     "compilerOptions": {
-       "target": "ES6",
-       "module": "commonjs",
-       "esModuleInterop": true,
-       "strict": true,
-       "skipLibCheck": true,
-       "forceConsistentCasingInFileNames": true,
-       "outDir": "./dist",
-       "rootDir": "./src"
-     },
-     "include": ["src/**/*"],
-     "exclude": ["node_modules"]
-   }
-   ```
-
-### Environment Variables:
-
-### Create a `.env` file in the root directory and add the following variables:
-
-    - env file
     PORT=5000
     MONGO_URI=mongodb://localhost:27017/db_todo
-    JWT_SECRET=your_secret_key
+    JWT_SECRET=your_secret_key_here
     NODE_ENV=dev
 
-### Run the Project:
+- Replace `your_secret_key_here` with a strong secret string.
+- Adjust `MONGO_URI` if you use a cloud database.
 
-    To run the project in **development mode** (using TypeScript without building it first), use:
+## Step 6: Create the MongoDB Database
+
+Using MongoDB Compass or Mongo Shell, create a database named:
+
+    db_todo
+
+If MongoDB is running locally, it will auto-create this database when the app inserts data.
+
+## Step 7: Run the Project
+
+Development mode (with live reload):
+
     npm run dev
 
-### Creating automatic database in MongoDB Compass
+This will run the server using ts-node-dev, compiling and running TypeScript files on the fly.
 
-- Database : db_todo
+## Step 8: Build the Project (Optional for Production)
 
-### Build the Project:
+To compile TypeScript files into JavaScript in the dist/ folder:
 
-    npm run build [This will output compiled files in the dist/ folder.]
+    npm run build
 
-### run the compiled project
+## Step 9: Run the Compiled Project
+
+After building, run the compiled JavaScript files:
 
     npm run start
 
-### API Documentation
+## Step 10: Access API Documentation
 
-    Swagger API doc link
-    - http://localhost:5000/api-docs/
+Once the server is running, open:
 
-### Cron Job Setup
+    http://localhost:5000/api-docs/
 
-    npm install node-cron - File - cron-job/expireTodoJob.ts
+This page lists all available API endpoints and how to use them.
+
+## Step 11: Cron Job Setup
+
+The project uses a CRON job to automatically update expired todos daily.
+
+- CRON job code location: cron-job/expireTodoJob.ts
+- Scheduling is done using node-cron.
+- If not installed, install node-cron via:
+
+  npm install node-cron
+
+The CRON job runs automatically when the server starts.
+
+---
+
+Summary of Useful Commands:
+
+npm install - Install all dependencies
+npm run dev - Run in development mode (live reload)
+npm run build - Compile TypeScript to JavaScript
+npm run start - Run the compiled JavaScript
