@@ -31,7 +31,9 @@ export const TODO_MESSAGES = {
   TODO_CREATED_SUCCESS: 'Todo created successfully',
   TODO_UPDATED_SUCCESS: 'Todo updated successfully',
   TODO_FETCHED_SUCCESS: 'Todo fetched successfully',
-  TODO_NOT_FOUND: 'Todo not found'
+  TODO_LIST_FETCHED_SUCCESS: 'Todo list fetched successfully',
+  TODO_NOT_FOUND: 'Todo not found',
+  TODO_LIST_EMPTY: 'No todos available'
 };
 
 export const TODO_ERROR_MESSAGES = {

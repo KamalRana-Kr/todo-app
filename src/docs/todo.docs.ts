@@ -5,6 +5,11 @@
  *     description: Todo management APIs
  *
  * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  *   schemas:
  *     CreateTodoDTO:
  *       type: object
@@ -68,12 +73,6 @@
  *           type: string
  *           format: date-time
  *           example: "2025-06-02T12:00:00Z"
-
- *   securitySchemes:
- *     bearerAuth:
- *       type: http
- *       scheme: bearer
- *       bearerFormat: JWT
  */
 
 /**
@@ -219,3 +218,109 @@
  *                   nullable: true
  *                   example: null
  */
+/**
+ * @swagger
+ * /api/todos/list:
+ *   get:
+ *     summary: Get Todo list with pagination
+ *     tags:
+ *       - Todo
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *         description: Page number for pagination (default is 1)
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 100
+ *           default: 10
+ *         description: Number of todos per page (default is 10)
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum:
+ *             - "true"
+ *             - "false"
+ *         description: Filter todos by completion status ('true' for completed, 'false' for pending)
+ *     responses:
+ *       200:
+ *         description: Successfully fetched todos list
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: Todos fetched successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     todos:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/TodoResponse'
+ *                     total:
+ *                       type: integer
+ *                       example: 45
+ *                     page:
+ *                       type: integer
+ *                       example: 1
+ *                     totalPages:
+ *                       type: integer
+ *                       example: 5
+ *       404:
+ *         description: No todos found for the user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 404
+ *                 message:
+ *                   type: string
+ *                   example: "Todo list is empty"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     todos:
+ *                       type: array
+ *                       items: {}
+ *                     total:
+ *                       type: integer
+ *                       example: 0
+ *                     page:
+ *                       type: integer
+ *                       example: 1
+ *                     totalPages:
+ *                       type: integer
+ *                       example: 0
+ *       401:
+ *         description: Unauthorized (missing or invalid token)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Unauthorized"
+ */
+

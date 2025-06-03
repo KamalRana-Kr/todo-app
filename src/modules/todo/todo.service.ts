@@ -72,3 +72,48 @@ export async function getTodoDetails(
         updatedAt: todo.updatedAt
     };
 }
+
+export async function getTodosByUser(
+    userId: Types.ObjectId | string,
+    page: number = 1,
+    limit: number = 10,
+    status?: string
+): Promise<{ todos: TodoResponse[]; total: number }> {
+    const skip = (page - 1) * limit;
+
+    const matchFilter: any = {
+        user: new Types.ObjectId(userId),
+    };
+
+    if (status === 'true') {
+        matchFilter.completed = true;
+    } else if (status === 'false') {
+        matchFilter.completed = false;
+    }
+
+    const total = await Todo.countDocuments(matchFilter);
+
+    const todosList = await Todo.aggregate<TodoResponse>([
+        { $match: matchFilter },
+        { $sort: { dueDate: 1 } },
+        { $skip: skip },
+        { $limit: limit },
+        {
+            $project: {
+                _id: 0,
+                id: { $toString: '$_id' },
+                title: 1,
+                description: 1,
+                status: {
+                    $cond: [{ $eq: ['$completed', true] }, 'completed', 'pending'],
+                },
+                dueDate: 1,
+                createdAt: 1,
+                updatedAt: 1,
+            },
+        },
+    ]);
+
+    return { todos: todosList, total };
+}
+

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import {
     createTodo as createTodoService,
     getTodoDetails,
+    getTodosByUser,
     updateTodo as updateTodoService
 } from './todo.service';
 import { CreateTodoDTO, TodoResponse, UpdateTodoDTO } from './todo.interface';
@@ -107,6 +108,50 @@ export const getTodo = async (
         }
     } catch (error) {
         console.error(`Error in getTodo function while fetching Todo details for Todo ID: ${req.params.id}`, error);
+        next(error);
+    }
+};
+
+//List Todo
+export const listTodos = async (
+    req: Request,
+    res: Response<IResponse<{ todos: TodoResponse[]; total: number; page: number; totalPages: number }>>,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const authReq = req as AuthRequest;
+        console.info(`Received request to list Todos for user: ${authReq.user.userId}`);
+
+        const page = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) || 10;
+
+        let todoStatus: string | undefined;
+        if (req.query.status === 'true' || req.query.status === 'false') {
+            todoStatus = req.query.status;
+        }
+
+        const { todos, total } = await getTodosByUser(authReq.user.userId, page, limit, todoStatus);
+
+        if (todos.length === 0) {
+            console.warn(`No todos found for user: ${authReq.user.userId}`);
+            res.status(HTTP_STATUS_CODES.NOT_FOUND).json({
+                status: HTTP_STATUS_CODES.NOT_FOUND,
+                message: TODO_MESSAGES.TODO_LIST_EMPTY,
+                data: { todos, total, page, totalPages: 0 },
+            });
+            return;
+        }
+
+        const totalPages = Math.ceil(total / limit);
+
+        console.info(`Successfully fetched todos for user: ${authReq.user.userId}`);
+        res.status(HTTP_STATUS_CODES.OK).json({
+            status: HTTP_STATUS_CODES.OK,
+            message: TODO_MESSAGES.TODO_LIST_FETCHED_SUCCESS,
+            data: { todos, total, page, totalPages },
+        });
+    } catch (error) {
+        console.error("Error in listTodos function while fetching Todo list", error);
         next(error);
     }
 };
